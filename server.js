@@ -30,6 +30,8 @@ import conversationRouter from "./resources/conversation/conversation_router.js"
 import fs from "fs";
 
 import cloudinary from "cloudinary";
+import Audio from "./resources/audio/audio_model.js";
+import VoiceActive from "./resources/eleven_labs/activeVoice_model.js";
 
 config();
 const app = express();
@@ -130,13 +132,7 @@ app.post("/chatgpt/upload", async (req, res) => {
 app.post("/elevenlabs/text-to-speak", async (req, res) => {
   const text = req.body.text;
 
-  var voiceId;
-
-  if (req.body.voiceId == null || req.body.voiceId == "")
-    voiceId = "21m00Tcm4TlvDq8ikWAM"; // default voice
-  else voiceId = req.body.voiceId;
-
-  // console.log("VoiceId " + voiceId);
+  const audios = await VoiceActive.find({ status: "active" });
 
   const headers = {
     Accept: "audio/mpeg",
@@ -154,7 +150,7 @@ app.post("/elevenlabs/text-to-speak", async (req, res) => {
   };
   try {
     const response = await axios.post(
-      `https://api.elevenlabs.io/v1/text-to-speech/${voiceId}`,
+      `https://api.elevenlabs.io/v1/text-to-speech/${audios[0]?.voice_id}`,
       body,
       {
         headers: headers,
