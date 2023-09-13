@@ -16,6 +16,7 @@ class ConversationController {
           answer: "",
         },
         branch: req.body.branchName,
+        branchID: req.body.branchID,
       });
 
       // check device
@@ -91,7 +92,8 @@ class ConversationController {
           message: "id is required",
         });
       }
-      const conversation = await Conversation.findById(req.params.id);
+      const conversation = await Conversation.find({ branchID: req.params.id });
+      console.log(conversation);
       if (!conversation) {
         return res.status(404).json({
           status: "failed",

@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+import mongoose, { SchemaTypes } from "mongoose";
 const { Schema, model } = mongoose;
 
 const ConversationSchema = new Schema(
@@ -16,6 +16,11 @@ const ConversationSchema = new Schema(
     },
     branch: {
       type: String,
+    },
+    branchID: {
+      type: SchemaTypes.ObjectId,
+      ref: "branch",
+      required: true,
     },
   },
   {
