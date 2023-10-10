@@ -132,7 +132,14 @@ app.post("/chatgpt/upload", async (req, res) => {
 app.post("/elevenlabs/text-to-speak", async (req, res) => {
   const text = req.body.text;
 
-  const audios = await VoiceActive.find({ status: "active" });
+  const audios = await VoiceActive.findOne({ status: "active" });
+
+  if (!audios) {
+    return res.status(404).json({
+      status: "failed",
+      data: "please active audio file from admin"
+    })
+  }
 
   const headers = {
     Accept: "audio/mpeg",
