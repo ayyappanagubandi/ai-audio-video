@@ -4,18 +4,16 @@ import ElevenLabsController from "./eleven_labs_controller.js";
 const router = Router();
 
 router.route("/text-to-speak").post(ElevenLabsController.textToSpeak);
-router.route("/add").post(ElevenLabsController.addVoice);
-router.route("/").get(ElevenLabsController.getVoices);
+router.route("/").post(ElevenLabsController.addVoice).get(ElevenLabsController.activeAllVoice);
 
-// active voice all
-router.route("/active-voice").get(ElevenLabsController.activeAllVoice);
+router.route("/default/voices").get(ElevenLabsController.activeAllVoice);
 
 router
   .route("/active-voice-update/:id")
   .put(ElevenLabsController.activateVoiceStatus);
 
 router
-  .route("/active-voice-delete/:id")
+  .route("/:id")
   .delete(ElevenLabsController.deleteVoiceStatus);
 
 export default router;

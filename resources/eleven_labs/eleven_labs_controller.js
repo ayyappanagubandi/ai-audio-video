@@ -85,8 +85,9 @@ class ElevenLabsController {
   };
 
   static addVoice = async (req, res) => {
-    const name = req.body.voice_name;
-    const voice = req.files.audio;
+    const name = req.body?.voice_name;
+    const voice = req.files?.audio;
+    console.log(req);
     if (!voice || !name) {
       return res.status(400).json({
         status: "failed",
@@ -97,11 +98,11 @@ class ElevenLabsController {
       "xi-api-key": process.env.ELEVENLABS_API_KEY,
       "Content-Type": "Multipart/form-data",
     };
-    const filePath = req.files.audio.tempFilePath;
+    const filePath = voice?.tempFilePath;
     const fileBuffer = fs.readFileSync(filePath);
     const formData = new FormData();
     const blob = new Blob([fileBuffer], { type: "audio/mpeg" });
-    formData.append("files", blob, req.files.audio.name);
+    formData.append("files", blob, voice?.name);
     formData.append("name", name);
 
     try {
@@ -112,10 +113,14 @@ class ElevenLabsController {
           headers: headers,
         }
       );
-       // save to voice model
-   
-      await ActiveVoice.create({voice_name:voice.name,voice_id:response?.data?.voice_id,namee:req.body.name})
-      
+      // save to voice model
+
+      await ActiveVoice.create({
+        fileName: voice?.name,
+        voiceId: response?.data?.voice_id,
+        voiceName: req.body.name
+      })
+
       res.status(200).json({
         status: "success",
         data: response.data,
@@ -158,7 +163,7 @@ class ElevenLabsController {
 
 
 
-   // Active voice
+  // Active voice
   static activeAllVoice = async (req, res) => {
     try {
       const avatars = await ActiveVoice.find();
@@ -202,7 +207,8 @@ class ElevenLabsController {
     }
   };
 
-    static async deleteVoiceStatus(req, res) {
+  static async deleteVoiceStatus (req, res) {
+
     try {
       if (!req.params.id) {
         return res.status(400).json({
@@ -217,6 +223,13 @@ class ElevenLabsController {
           message: "voice not found",
         });
       }
+      const headers = {
+        "xi-api-key": process.env.ELEVENLABS_API_KEY,
+        "Content-Type": "application/json",
+      };
+      const response = await axios.delete(`https://api.elevenlabs.io/v1/voices${avatar?.voiceId}`, {
+        headers: headers,
+      });
       await ActiveVoice.findByIdAndDelete(req.params.id);
       return res.status(200).json({
         status: "success",
@@ -229,8 +242,6 @@ class ElevenLabsController {
       });
     }
   }
-  
-  
 }
 
 export default ElevenLabsController;

@@ -93,7 +93,6 @@ app.get("/", (req, res) => {
 });
 
 app.post("/chatgpt/upload", async (req, res) => {
-  console.log("req.file", req.files.audio);
   const url = "https://api.openai.com/v1/audio/transcriptions";
 
   if (!req.files.audio) {
