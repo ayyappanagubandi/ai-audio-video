@@ -87,7 +87,6 @@ class ElevenLabsController {
   static addVoice = async (req, res) => {
     const name = req.body?.voice_name;
     const voice = req.files?.audio;
-    console.log(req);
     if (!voice || !name) {
       return res.status(400).json({
         status: "failed",
@@ -105,7 +104,6 @@ class ElevenLabsController {
     formData.append("files", blob, voice?.name);
     formData.append("name", name);
 
-    console.log(formData);
     try {
       const response = await axios.post(
         `https://api.elevenlabs.io/v1/voices/add`,
@@ -228,7 +226,7 @@ class ElevenLabsController {
         "xi-api-key": process.env.ELEVENLABS_API_KEY,
         "Content-Type": "application/json",
       };
-      const response = await axios.delete(`https://api.elevenlabs.io/v1/voices${avatar?.voiceId}`, {
+      await axios.delete(`https://api.elevenlabs.io/v1/voices${avatar?.voiceId}`, {
         headers: headers,
       });
       await ActiveVoice.findByIdAndDelete(req.params.id);

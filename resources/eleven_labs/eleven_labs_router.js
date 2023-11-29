@@ -13,7 +13,7 @@ router
   .put(ElevenLabsController.activateVoiceStatus);
 
 router
-  .route("/:id")
+  .route("/voice/:id")
   .delete(ElevenLabsController.deleteVoiceStatus);
 
 export default router;
