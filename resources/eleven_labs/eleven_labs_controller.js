@@ -226,7 +226,7 @@ class ElevenLabsController {
         "xi-api-key": process.env.ELEVENLABS_API_KEY,
         "Content-Type": "application/json",
       };
-      await axios.delete(`https://api.elevenlabs.io/v1/voices${avatar?.voiceId}`, {
+      await axios.delete(`https://api.elevenlabs.io/v1/voices/${avatar?.voiceId}`, {
         headers: headers,
       });
       await ActiveVoice.findByIdAndDelete(req.params.id);
