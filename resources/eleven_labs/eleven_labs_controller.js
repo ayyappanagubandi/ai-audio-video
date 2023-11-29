@@ -105,6 +105,7 @@ class ElevenLabsController {
     formData.append("files", blob, voice?.name);
     formData.append("name", name);
 
+    console.log(formData);
     try {
       const response = await axios.post(
         `https://api.elevenlabs.io/v1/voices/add`,
