@@ -65,9 +65,9 @@ app.use(
 );
 
 app.use((req, res, next) => {
-  res.setHeader('Acces-Control-Allow-Origin','*');
-  res.setHeader('Acces-Control-Allow-Methods','GET,POST,PUT,PATCH,DELETE');
-  res.setHeader('Acces-Contorl-Allow-Methods','Content-Type','Authorization');
+  res.setHeader('Access-Control-Allow-Origin','*');
+  res.setHeader('Access-Control-Allow-Methods','GET,POST,PUT,PATCH,DELETE');
+  res.setHeader('Access-Contorl-Allow-Methods','Content-Type','Authorization');
   next();
 })
 // const storage = multer.memoryStorage();
